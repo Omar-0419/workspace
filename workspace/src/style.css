@@ -1,2 +1,71 @@
 @import "tailwindcss";
 @import '@fortawesome/fontawesome-free/css/all.min.css';
+
+:root {
+
+  /* BACKGROUNDS */
+  --bg-main: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --bg-input: #FEF3C7;
+
+  /* PRIMARY COLORS */
+  --primary: #4F46E5;
+  --primary-hover: #4338CA;
+
+  /* TEXT COLORS */
+  --text-main: #1F2937;
+  --text-secondary: #6B7280;
+  --text-light: #FFFFFF;
+
+  /* BORDERS */
+  --border-color: #D1D5DB;
+
+  /* STATES */
+  --success: #22C55E;
+  --error: #EF4444;
+  --warning: #FACC15;
+
+  /* SHADOW */
+  --shadow: rgba(0, 0, 0, 0.08);
+
+}
+
+body{
+    background-color: var(--bg-main);
+}
+
+button{
+    cursor: pointer;
+}
+
+#app{
+    background-color: var(--bg-card);
+}
+
+#workspaceText{
+    color: var(--text-main);
+}
+
+#inputAdd{
+    border: 1px solid var(--text-secondary)
+}
+
+#inputAdd:focus-within{
+    border: 2px solid var(--primary)
+}
+
+#inputAdd input:focus{
+    outline: none;
+}
+
+#addBtn{
+    background-color: var(--primary);
+    color: var(--text-light);
+    transition: all .3s ease;
+}
+
+#addBtn:hover{
+    background-color: var(--primary-hover);
+    box-shadow: 0 2px 0 3px var(--shadow);
+    transform: translateY(-2px);
+}
