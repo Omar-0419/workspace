@@ -47,7 +47,7 @@ button{
 }
 
 #inputAdd{
-    border: 1px solid var(--text-secondary)
+    border: 1px solid var(--border-color)
 }
 
 #inputAdd:focus-within{
@@ -68,4 +68,20 @@ button{
     background-color: var(--primary-hover);
     box-shadow: 0 2px 0 3px var(--shadow);
     transform: translateY(-2px);
+}
+
+li{
+    border: 1px solid var(--text-secondary);
+}
+
+i{
+    color: var(--error);
+    transition: all .3s ease;
+    cursor: pointer;
+}
+
+i:hover{
+    color: red;
+    transform: scale(1.1);
+
 }

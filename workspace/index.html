@@ -12,14 +12,16 @@
       <h1 id="workspaceText" class="text-3xl">Workspace</h1>
       <div class="flex justify-around items-center gap-3">
         <div id="inputAdd" class="w-full h-10 items-center flex px-3 rounded-2xl">
-          <input type="text" class="w-full h-full rounded-2xl" placeholder="You can add some task here...">
+          <input id="taskInput" type="text" class="w-full h-full rounded-2xl" placeholder="You can add some task here..." required />
         </div>
 
         <button id="addBtn" class="bg-amber-200 px-3 py-2 rounded-2xl">Add</button>
       
       </div>
 
-      <ul id="listTask"></ul>
+      <ul id="listTask" class="flex flex-col gap-3">
+        <li class="w-full border rounded-sm py-1 flex px-2 text-center justify-between items-center">Task <i class="fa-solid fa-trash"></i></li>
+      </ul>
 
       
 
