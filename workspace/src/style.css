@@ -85,3 +85,11 @@ i:hover{
     transform: scale(1.1);
 
 }
+
+#statusFalse{
+    color: var(--text-secondary);
+}
+
+#statusTrue{
+    color: var(--success);
+}
