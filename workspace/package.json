@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server":"npx json-server --watch db.json"
   },
   "devDependencies": {
     "vite": "^8.0.12"
@@ -15,6 +16,7 @@
     "24": "^0.0.0",
     "@fortawesome/fontawesome-free": "^7.2.0",
     "@tailwindcss/vite": "^4.3.0",
+    "json-server": "0.17.4",
     "tailwindcss": "^4.3.0"
   }
 }
