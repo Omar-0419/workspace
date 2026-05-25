@@ -10,9 +10,39 @@ const doneBtn = document.getElementById("done")
 const undoneBtn = document.getElementById("undone")
 
 
-// estado de filtros
+
+// estado general
 let state = {
+
     filter: "all"
+
+}
+
+
+
+// guardar borrador automáticamente
+taskInput.addEventListener("input", (e) => {
+
+    sessionStorage.setItem("draftTask", e.target.value)
+
+})
+
+
+
+// recuperar borrador
+taskInput.value = sessionStorage.getItem("draftTask") || ""
+
+
+
+// botones activos
+function removeActiveButtons(){
+
+    allBtn.classList.remove("activeFilter")
+
+    doneBtn.classList.remove("activeFilter")
+
+    undoneBtn.classList.remove("activeFilter")
+
 }
 
 
@@ -21,13 +51,14 @@ function renderTasks(tasks) {
 
     listTask.innerHTML = ""
 
+
+
     // filtros
     let filteredTasks = tasks
 
     if(state.filter === "completed"){
 
         filteredTasks = tasks.filter(task => task.completed)
-        doneBtn.classList.toggle()
 
     }
 
@@ -37,16 +68,27 @@ function renderTasks(tasks) {
 
     }
 
+
+
     filteredTasks.forEach(task => {
 
         const li = document.createElement("li")
 
         li.className = "w-full border rounded-sm py-1 flex px-2 text-center justify-between items-center"
 
+
+
         li.innerHTML = `
-            ${task.completed ? '<i id="statusTrue" class="fa-solid fa-circle-check""></i>' : '<i id="statusFalse" class="fa-regular fa-circle-check""></i>'} ${task.title}
+            ${task.completed 
+                ? '<i id="statusTrue" class="fa-solid fa-circle-check"></i>' 
+                : '<i id="statusFalse" class="fa-regular fa-circle-check"></i>'} 
+                
+            ${task.title}
+
             <i id="deleteBtn" class="fa-solid fa-trash"></i>
         `
+
+
 
         const deleteBtn = li.querySelector("#deleteBtn")
 
@@ -104,10 +146,19 @@ init()
 
 
 
+// botón activo inicial
+allBtn.classList.add("activeFilter")
+
+
+
 // filtro ALL
 allBtn.addEventListener("click", async () => {
 
     state.filter = "all"
+
+    removeActiveButtons()
+
+    allBtn.classList.add("activeFilter")
 
     init()
 
@@ -120,6 +171,10 @@ doneBtn.addEventListener("click", async () => {
 
     state.filter = "completed"
 
+    removeActiveButtons()
+
+    doneBtn.classList.add("activeFilter")
+
     init()
 
 })
@@ -131,12 +186,17 @@ undoneBtn.addEventListener("click", async () => {
 
     state.filter = "pending"
 
+    removeActiveButtons()
+
+    undoneBtn.classList.add("activeFilter")
+
     init()
 
 })
 
 
 
+// agregar tarea
 addBtn.addEventListener("click", async () => {
 
     if (taskInput.value.trim() === "") {
@@ -150,6 +210,7 @@ addBtn.addEventListener("click", async () => {
         const newTask = {
 
             title: taskInput.value,
+
             completed: false
 
         }
@@ -160,7 +221,15 @@ addBtn.addEventListener("click", async () => {
 
         renderTasks(tasks)
 
+
+
+        // limpiar input
         taskInput.value = ""
+
+
+
+        // borrar borrador guardado
+        sessionStorage.removeItem("draftTask")
 
     }
 
