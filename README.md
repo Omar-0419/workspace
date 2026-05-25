@@ -1,93 +1,240 @@
-<<<<Workspace Task Manager>>>>
-Table of Contents
-1 Project Overview
-2 Tech Stack
-3 Architecture & Filesystem
-4 Functional Logic Breakdown
-5 Setup and Installation
-6 Future Improvements
+Workspace — Modern To-Do Application
+📌 Project Overview
 
-<<<<Project Overview>>>>
+Workspace is a modern and responsive To-Do Application designed with a modular architecture and a clean user experience in mind.
+The application enables users to efficiently manage tasks through complete CRUD operations (Create, Read, Update, Delete) while maintaining smooth performance and intuitive interactions.
 
-Workspace is a modern, responsive To-Do application built with a modular approach. It allows users to perform CRUD (Create, Read, Update, Delete) operations on tasks, providing a seamless user experience with real-time filtering, persistent dark mode, and state management.
+Key features include:
 
-<<<<Tech Stack>>>>
- •Frontend: HTML5, Tailwind CSS.
+✅ Real-time task filtering
+🌙 Persistent Dark Mode
+🔎 Live search functionality
+💾 Data persistence with LocalStorage & SessionStorage
+🔄 REST API integration using JSON Server
+⚡ Modular ES6 JavaScript architecture
+🛠 Tech Stack
+Technology	Purpose
+HTML5	Application structure
+Tailwind CSS	Responsive UI styling
+Vanilla JavaScript (ES6 Modules)	Application logic
+Vite	Development & build tool
+FontAwesome	Icons
+JSON Server	Mock REST API
+LocalStorage / SessionStorage	Client-side persistence
+🏗 Architecture & File Structure
+workspace/
+│
+├── index.html
+├── style.css
+├── main.js
+├── api.js
+├── db.json
+├── package.json
+└── vite.config.js
+📄 1. HTML Structure (index.html)
 
- •Logic: Vanilla JavaScript (ES6 Modules).
+The application follows a mobile-first design philosophy using Tailwind utility classes.
 
- •Build Tool: Vite.
+Main Layout
+Centered dashboard container
+Rounded modern UI
+Flexible column layout
+User Controls
 
- •Icons: FontAwesome.
+The interface contains:
 
- •Data Persistence: JSON Server (REST API) & Browser Storage (LocalStorage/SessionStorage).
+Task input field
+Search bar
+Theme switcher (Dark Mode)
+Task filters:
+All
+Pending
+Completed
+Dynamic Rendering
 
-<<<<Architecture & Filesystem>>>>
-1. HTML (⁠index.html⁠)
-The structure follows a mobile-first philosophy using Tailwind utility classes.
+The task list is dynamically injected into:
 
- The Container: A centered, rounded, flex-column layout acting as the primary dashboard.
- Controls: Includes an input field for new tasks, a search bar for filtering, and specific controls for toggling the UI theme (Dark Mode) and task categories (All/Pending/Completed).
+<ul id="listTask"></ul>
 
- Dynamic Injection: The ⁠<ul>⁠ with the ID ⁠listTask⁠ serves as the anchor point where JavaScript injects task items dynamically based on the state.
+This element acts as the rendering root where tasks are generated via JavaScript.
 
-2. Styles (⁠style.css⁠)
-We combine standard CSS with Tailwind directives:
- Tailwind Integration: ⁠@import "tailwindcss"⁠ and ⁠@import "@fortawesome/fontawesome-free"⁠.
+🎨 2. Styling (style.css)
 
- Custom Variables: The ⁠:root⁠ selector defines a color palette for main backgrounds, text, and alert states (⁠--success⁠, ⁠--error⁠).
+The project combines Tailwind CSS with custom CSS variables for better maintainability.
 
- Dark Mode Support: Utilizes ⁠darkMode: 'class'⁠ strategy. The CSS interacts with the ⁠dark⁠ class added to the ⁠html⁠ element to swap variable values or background colors.
+Tailwind Imports
+@import "tailwindcss";
+@import "@fortawesome/fontawesome-free";
+CSS Variables
+:root {
+  --success: #22c55e;
+  --error: #ef4444;
+}
 
-3. JavaScript (⁠main.js⁠ & ⁠api.js⁠)
-The logic is split to separate concerns:
- ⁠api.js⁠: Handles all asynchronous communication with the JSON-server. It uses ⁠fetch⁠ to handle ⁠GET⁠, ⁠POST⁠, ⁠PATCH⁠, and ⁠DELETE⁠ requests, returning promises that keep the UI in sync with the server.
- 
- •⁠main.js⁠: The brain of the application.
- State Management: An object ⁠state⁠ tracks the filter status, search input, and theme preference.
- Persistence: Uses ⁠localStorage⁠ to keep the user's Dark Mode preference across sessions. ⁠sessionStorage⁠ is utilized to hold "draft" task data, preventing data loss on accidental page refreshes.
+These variables centralize:
 
- Render Engine: A ⁠renderTasks()⁠ function that performs client-side filtering on the data fetched from the API before mapping it to the DOM.
-4. JSON (⁠db.json⁠)
-The mock database acts as the single source of truth. It stores an array of objects where each object contains:
+Colors
+Backgrounds
+Alert states
+Theme customization
+🌙 Dark Mode System
 
- •⁠id⁠: Unique identifier.
+Dark Mode is implemented using Tailwind's:
 
-•⁠title⁠: The task description.
+darkMode: 'class'
 
- •⁠completed⁠: A boolean representing the task status.
+The application toggles the dark class on the root HTML element:
 
-<<<<unctional Logic Breakdown>>>>
-Filtering and Search
-The application implements a non-destructive filter. When ⁠renderTasks()⁠ is triggered, it performs a chain of operations:
+document.documentElement.classList.toggle('dark')
 
-1 Filter by Search: Checks if the task title includes the string from ⁠state.search⁠.
+This instantly updates the UI theme across the application.
 
-2 Filter by Status: If ⁠state.filter⁠ is set to 'completed' or 'pending', it uses ⁠.filter()⁠ to prune the array accordingly.
+⚙️ 3. JavaScript Logic
 
-3 Dynamic Rendering: It re-builds the DOM tree for the list, appending appropriate classes (like ⁠line-through⁠ for completed tasks).
+The logic is divided into two main modules for better separation of concerns.
 
-<<<<Persistent Dark Mode>>>>
- Detection: On load, the script checks ⁠localStorage.getItem('darkMode')⁠.
+📡 api.js
 
- Toggling: The ⁠toggleDarkMode⁠ function uses ⁠document.documentElement.classList.toggle('dark')⁠. Because Tailwind is configured for ⁠class⁠ mode, this instantly cascades color changes throughout the application.
+Responsible for all communication with the JSON Server API.
 
-<<<<Setup and Installation>>>>
+Supported Requests
+GET
+POST
+PATCH
+DELETE
+Example
+fetch('http://localhost:3000/tasks')
+
+This module ensures synchronization between the UI and the database.
+
+🧠 main.js
+
+Acts as the core controller of the application.
+
+State Management
+
+A centralized state object stores:
+
+const state = {
+  filter: 'all',
+  search: '',
+  darkMode: false
+}
+💾 Persistence Layer
+LocalStorage
+
+Stores:
+
+Dark Mode preference
+localStorage.setItem('darkMode', true)
+SessionStorage
+
+Stores:
+
+Draft task content
+
+This prevents data loss after accidental page refreshes.
+
+🔍 Functional Logic Breakdown
+Real-Time Filtering System
+
+The application uses a non-destructive filtering strategy inside renderTasks().
+
+Filtering Flow
+1️⃣ Search Filtering
+task.title.includes(state.search)
+
+Filters tasks according to the user's input.
+
+2️⃣ Status Filtering
+.filter(task => task.completed)
+
+Depending on the active filter:
+
+All
+Pending
+Completed
+3️⃣ Dynamic Rendering
+
+Tasks are re-rendered dynamically into the DOM.
+
+Completed tasks receive styles such as:
+
+line-through
+
+for visual feedback.
+
+🌙 Persistent Dark Mode
+Detection on Startup
+localStorage.getItem('darkMode')
+
+The app checks stored preferences when loading.
+
+Theme Toggle
+toggleDarkMode()
+
+Updates the root class and persists the preference automatically.
+
+🗄 Database Structure (db.json)
+
+The mock database acts as the application's single source of truth.
+
+Example Schema
+{
+  "id": 1,
+  "title": "Finish project documentation",
+  "completed": false
+}
+🚀 Setup & Installation
 Prerequisites
- •Node.js installed.
- ⁠•json-server⁠ installed globally or as a dependency.
 
- <<<<Installation Steps>>>>
- 1. clone the repository
- 2. install dependencies: 
- bash; 
- •nmp install
+Before starting, make sure you have installed:
 
- <<<<Future Improvements>>>>
- Drag-and-Drop: Implement HTML5 drag-and-drop API to reorder tasks.
+Node.js
+JSON Server
+📥 Installation Steps
+1️⃣ Clone the repository
+git clone <repository-url>
+2️⃣ Install dependencies
+npm install
+3️⃣ Start JSON Server
+json-server --watch db.json
+4️⃣ Run the development server
+npm run dev
+✨ Future Improvements
+📌 Drag & Drop Support
 
- Due Dates: Expand the JSON schema to include timestamps for task deadlines.
+Implement the HTML5 Drag-and-Drop API for task reordering.
 
- Animations: Use Framer Motion or simple CSS keyframes for smoother task entry and removal.
- 
-Developed as a collaborative project, ensuring high performance and modular code maintenance.
+📅 Due Dates
+
+Expand the database schema with:
+
+deadlines
+timestamps
+reminders
+🎞 UI Animations
+
+Add smoother transitions using:
+
+CSS Keyframes
+Framer Motion
+🔔 Notifications
+
+Add toast notifications for:
+
+Task creation
+Updates
+Errors
+🤝 Collaboration & Maintainability
+
+This project was developed collaboratively with a strong focus on:
+
+⚡ Performance
+🧩 Modular architecture
+🧹 Clean code practices
+📱 Responsive design
+🔧 Scalability
+✅ Conclusion
+
+Workspace demonstrates how a lightweight stack using Vanilla JavaScript + Tailwind CSS can deliver a modern and scalable task management experience while maintaining excellent performance and maintainable architecture.
