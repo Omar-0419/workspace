@@ -1,11 +1,19 @@
-import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette'
 import '../style.css'
 import { getTask, createTask, deleteTask, updateTask } from './api'
-
 
 const taskInput = document.getElementById("taskInput")
 const addBtn = document.getElementById("addBtn")
 const listTask = document.getElementById("listTask")
+
+const allBtn = document.getElementById("all")
+const doneBtn = document.getElementById("done")
+const undoneBtn = document.getElementById("undone")
+
+
+// estado de filtros
+let state = {
+    filter: "all"
+}
 
 
 
@@ -13,7 +21,23 @@ function renderTasks(tasks) {
 
     listTask.innerHTML = ""
 
-    tasks.forEach(task => {
+    // filtros
+    let filteredTasks = tasks
+
+    if(state.filter === "completed"){
+
+        filteredTasks = tasks.filter(task => task.completed)
+        doneBtn.classList.toggle()
+
+    }
+
+    if(state.filter === "pending"){
+
+        filteredTasks = tasks.filter(task => !task.completed)
+
+    }
+
+    filteredTasks.forEach(task => {
 
         const li = document.createElement("li")
 
@@ -26,20 +50,29 @@ function renderTasks(tasks) {
 
         const deleteBtn = li.querySelector("#deleteBtn")
 
+
+
+        // completar tarea
         li.addEventListener("click", async () => {
-          await updateTask(task.id, {
-            completed: !task.completed // reverse the value
-          })
 
-          const tasks = await getTask()
+            await updateTask(task.id, {
 
-          renderTasks(tasks)
+                completed: !task.completed
+
+            })
+
+            const tasks = await getTask()
+
+            renderTasks(tasks)
 
         })
 
-        
 
-        deleteBtn.addEventListener("click", async () => {
+
+        // eliminar tarea
+        deleteBtn.addEventListener("click", async (e) => {
+
+            e.stopPropagation()
 
             await deleteTask(task.id)
 
@@ -48,6 +81,8 @@ function renderTasks(tasks) {
             renderTasks(tasks)
 
         })
+
+
 
         listTask.appendChild(li)
 
@@ -69,13 +104,48 @@ init()
 
 
 
+// filtro ALL
+allBtn.addEventListener("click", async () => {
+
+    state.filter = "all"
+
+    init()
+
+})
+
+
+
+// filtro DONE
+doneBtn.addEventListener("click", async () => {
+
+    state.filter = "completed"
+
+    init()
+
+})
+
+
+
+// filtro UNDONE
+undoneBtn.addEventListener("click", async () => {
+
+    state.filter = "pending"
+
+    init()
+
+})
+
+
+
 addBtn.addEventListener("click", async () => {
 
     if (taskInput.value.trim() === "") {
 
         alert("You didn't register some task")
 
-    } else {
+    } 
+    
+    else {
 
         const newTask = {
 

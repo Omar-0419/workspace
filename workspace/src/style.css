@@ -28,6 +28,8 @@
   /* SHADOW */
   --shadow: rgba(0, 0, 0, 0.08);
 
+  --transition: all .3s ease;
+
 }
 
 body{
@@ -61,7 +63,7 @@ button{
 #addBtn{
     background-color: var(--primary);
     color: var(--text-light);
-    transition: all .3s ease;
+    transition: var(--transition);
 }
 
 #addBtn:hover{
@@ -76,7 +78,7 @@ li{
 
 i{
     color: var(--error);
-    transition: all .3s ease;
+    transition: var(--transition);
     cursor: pointer;
 }
 
@@ -84,6 +86,17 @@ i:hover{
     color: red;
     transform: scale(1.1);
 
+}
+
+#listSearch li{
+    color: var(--primary);
+    border-color: var(--primary);
+    transition: var(--transition);
+}
+
+#listSearch li:hover{
+    background-color: var(--primary);
+    color: var(--text-light);
 }
 
 #statusFalse{
